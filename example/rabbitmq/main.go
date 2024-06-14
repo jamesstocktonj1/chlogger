@@ -16,6 +16,7 @@ func main() {
 		Topic: "logger",
 		AppID: "example",
 	})
+	defer logger.Close()
 
 	err := logger.Init()
 	if err != nil {
