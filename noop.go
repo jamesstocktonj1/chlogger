@@ -11,6 +11,11 @@ func (n *Noop) Init() error {
 	return nil
 }
 
+// Close closes the Noop logger.
+func (n *Noop) Close() error {
+	return nil
+}
+
 // Print does nothing.
 func (n *Noop) Print(string) {}
 

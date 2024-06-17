@@ -2,7 +2,11 @@ package chlogger
 
 // Logger is an interface that defines the methods for logging messages
 type Logger interface {
+	// Init initializes the logger
 	Init() error
+
+	// Close closes the logger
+	Close() error
 
 	// Print logs a string
 	Print(string)
