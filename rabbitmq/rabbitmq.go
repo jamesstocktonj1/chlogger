@@ -1,8 +1,6 @@
 package rabbitmq
 
 import (
-	"fmt"
-
 	"github.com/jamesstocktonj1/chlogger"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
@@ -65,109 +63,107 @@ func (r *RabbitMQLogger) Close() error {
 
 func (r *RabbitMQLogger) daemon() {
 	for msg := range r.msg {
-		fmsg := fmt.Sprintf(msg.Message, msg.Args...)
-
 		r.channel.Publish("", r.queue.Name, false, false, amqp.Publishing{
 			AppId:       r.cfg.AppID,
 			ContentType: "text/plain",
-			Body:        []byte(fmt.Sprintf("[%s]: %s", msg.Level, fmsg)),
+			Body:        []byte(msg.String()),
 		})
 	}
 }
 
-func (r *RabbitMQLogger) Print(message string) {
+func (r *RabbitMQLogger) Print(msg string) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Info,
-		Message: message,
+		Message: msg,
 	}
 }
 
-func (r *RabbitMQLogger) Println(message string) {
+func (r *RabbitMQLogger) Println(msg string) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Info,
-		Message: message + "\n",
+		Message: msg + "\n",
 	}
 }
 
-func (r *RabbitMQLogger) Debug(message string) {
+func (r *RabbitMQLogger) Debug(msg string) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Debug,
-		Message: message,
+		Message: msg,
 	}
 }
 
-func (r *RabbitMQLogger) Info(message string) {
+func (r *RabbitMQLogger) Info(msg string) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Info,
-		Message: message,
+		Message: msg,
 	}
 }
 
-func (r *RabbitMQLogger) Warn(message string) {
+func (r *RabbitMQLogger) Warn(msg string) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Warn,
-		Message: message,
+		Message: msg,
 	}
 }
 
-func (r *RabbitMQLogger) Error(message string) {
+func (r *RabbitMQLogger) Error(msg string) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Error,
-		Message: message,
+		Message: msg,
 	}
 }
 
-func (r *RabbitMQLogger) Fatal(message string) {
+func (r *RabbitMQLogger) Fatal(msg string) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Fatal,
-		Message: message,
+		Message: msg,
 	}
 }
 
-func (r *RabbitMQLogger) Printf(message string, args ...interface{}) {
+func (r *RabbitMQLogger) Printf(msg string, args ...interface{}) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Info,
-		Message: message,
+		Message: msg,
 		Args:    args,
 	}
 }
 
-func (r *RabbitMQLogger) Debugf(message string, args ...interface{}) {
+func (r *RabbitMQLogger) Debugf(msg string, args ...interface{}) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Debug,
-		Message: message,
+		Message: msg,
 		Args:    args,
 	}
 }
 
-func (r *RabbitMQLogger) Infof(message string, args ...interface{}) {
+func (r *RabbitMQLogger) Infof(msg string, args ...interface{}) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Info,
-		Message: message,
+		Message: msg,
 		Args:    args,
 	}
 }
 
-func (r *RabbitMQLogger) Warnf(message string, args ...interface{}) {
+func (r *RabbitMQLogger) Warnf(msg string, args ...interface{}) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Warn,
-		Message: message,
+		Message: msg,
 		Args:    args,
 	}
 }
 
-func (r *RabbitMQLogger) Errorf(message string, args ...interface{}) {
+func (r *RabbitMQLogger) Errorf(msg string, args ...interface{}) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Error,
-		Message: message,
+		Message: msg,
 		Args:    args,
 	}
 }
 
-func (r *RabbitMQLogger) Fatalf(message string, args ...interface{}) {
+func (r *RabbitMQLogger) Fatalf(msg string, args ...interface{}) {
 	r.msg <- chlogger.Message{
 		Level:   chlogger.Fatal,
-		Message: message,
+		Message: msg,
 		Args:    args,
 	}
 }
